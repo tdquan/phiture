@@ -10,10 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_24_032412) do
+ActiveRecord::Schema.define(version: 2020_03_24_093558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "buttons", force: :cascade do |t|
+    t.string "content"
+    t.string "link"
+    t.string "fill_color"
+    t.string "border_color"
+    t.bigint "inapp_id", null: false
+    t.index ["inapp_id"], name: "index_buttons_on_inapp_id"
+  end
+
+  create_table "inapps", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "title"
+    t.string "content"
+    t.string "image"
+    t.bigint "users_id", null: false
+    t.index ["users_id"], name: "index_inapps_on_users_id"
+  end
 
   create_table "jwt_blacklist", force: :cascade do |t|
     t.string "jti", null: false
@@ -27,7 +46,10 @@ ActiveRecord::Schema.define(version: 2020_03_24_032412) do
     t.string "encrypted_password", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "company"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "buttons", "inapps"
+  add_foreign_key "inapps", "users", column: "users_id"
 end
