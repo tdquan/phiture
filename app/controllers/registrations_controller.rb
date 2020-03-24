@@ -6,7 +6,12 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(sign_up_params)
 
-    resource.save
+    begin
+      resource.save
+    rescue ActiveRecord::RecordNotUnique
+      resource_error(resource, 'bad_request')
+      return
+    end
     render_resource(resource)
   end
 end
