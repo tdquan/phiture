@@ -6,7 +6,7 @@ class CreateInapps < ActiveRecord::Migration[6.0]
       t.string      :title
       t.string      :content
       t.string      :image
-      t.references  :users, null: false, foreign_key: true
+      t.references  :user, null: false, foreign_key: true
     end
   end
 end
