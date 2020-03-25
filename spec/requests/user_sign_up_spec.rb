@@ -21,7 +21,7 @@ RSpec.describe 'User sign up', type: :request do
     end
 
     it 'returns a new user' do
-      json = JSON.parse response.body
+      json = JSON.parse(response.body)
       expect(json['email']).to eq(params[:user][:email])
     end
   end
@@ -37,7 +37,7 @@ RSpec.describe 'User sign up', type: :request do
     end
 
     it 'returns bad request errors' do
-      json = JSON.parse response.body
+      json = JSON.parse(response.body)
       expect(json['errors'].first['title']).to eq('Bad Request')
     end
   end

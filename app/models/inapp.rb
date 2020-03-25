@@ -1,0 +1,2 @@
+class Inapp < ApplicationRecord
+end

@@ -9,8 +9,7 @@ class RegistrationsController < Devise::RegistrationsController
     begin
       resource.save
     rescue ActiveRecord::RecordNotUnique
-      resource_error(resource, 'bad_request')
-      return
+      resource.errors.add(:email, 'already taken')
     end
     render_resource(resource)
   end

@@ -9,5 +9,15 @@ Rails.application.routes.draw do
               controllers: {
                 sessions: 'sessions',
                 registrations: 'registrations'
-             }
+              }
+
+  resources :types do
+    resources :inapps, only: [:index, :create]
+  end
+
+  resources :inapps, except: [:index, :create] do
+    resources :buttons, only: [:index, :create]
+  end
+
+  resources :buttons, except: [:index, :create]
 end
