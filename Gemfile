@@ -26,6 +26,8 @@ gem 'rack-cors'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-byebug'
+  gem 'pry-rails'
   gem 'dotenv-rails', '~> 2.7.5'
   # Tests
   gem 'factory_bot_rails', '~> 5.1.1'

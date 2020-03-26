@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   devise_for  :users,
               path: '',
@@ -11,13 +13,12 @@ Rails.application.routes.draw do
                 registrations: 'registrations'
               }
 
+  resources :types, only: [:new, :edit]
   resources :types do
-    resources :inapps, only: [:index, :create]
+    resources :inapps, only: [:index]
   end
 
-  resources :inapps, except: [:index, :create] do
-    resources :buttons, only: [:index, :create]
+  resources :inapps, only: [:show] do
+    resources :buttons, only: [:index, :new, :create]
   end
-
-  resources :buttons, except: [:index, :create]
 end
