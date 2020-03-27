@@ -46,7 +46,7 @@ describe 'new inapp_type', type: :request do
 end
 
 # Visit the page to edit an existing template
-describe 'edit inapp_type' do
+describe 'edit page for inapp_type' do
   let(:user) { create(:user) }
   let(:url) { type_url(type.id) }
   let(:edit_url) { edit_type_url(type.id) }
@@ -54,6 +54,7 @@ describe 'edit inapp_type' do
   context 'when inapp_type exists' do
     let!(:type) { create(:type, user: user) }
     let!(:inapp) { create(:inapp, user: user, type: type) }
+    let!(:buttons) { 2.times.map { create(:button, inapp: inapp) } }
     before do
       sign_in(user.email, user.password)
       headers = { 'Authorization': response.headers['Authorization'] }
@@ -71,6 +72,12 @@ describe 'edit inapp_type' do
       expect(json['inapp']['content']).to be_present
       expect(json['inapp']['user_id']).to eq(user.id)
       expect(json['inapp']['type_id']).to eq(type.id)
+    end
+
+    it 'returns all the buttons for inapp' do
+      json = JSON.parse(response.body)
+      expect(json['buttons'].count).to eq(2)
+      expect(json['buttons'].first['inapp_id']).to eq(json['inapp']['id'])
     end
   end
 
@@ -106,10 +113,14 @@ describe 'create inapp_type' do
   context 'with valid params' do
     let!(:type) { build(:type, user: user) }
     let!(:inapp) { build(:inapp, user: user, type: type) }
+    let!(:buttons) { 2.times.map { build(:button, inapp: inapp) } }
     let(:params) do
+      button_params = {}
+      buttons.each_with_index { |button, index| button_params[index] = button }
       {
         type: type,
-        inapp: inapp
+        inapp: inapp,
+        buttons: { button_attrs: button_params }
       }.to_json
     end
 
@@ -132,8 +143,78 @@ describe 'update inapp_type' do
     put url, headers: headers, params: params
   end
 
+  context 'with an invalid id' do
+    let!(:type) { build(:type, id: 42) }
+    let(:params) do
+      {
+        type: type,
+        inapp: nil,
+        buttons: nil
+      }.to_json
+    end
+
+    it 'returns 404' do
+      expect(response).to have_http_status(404)
+    end
+  end
+
   context 'with valid params' do
     let!(:type) { create(:type, user: user) }
     let!(:inapp) { create(:inapp, user: user, type: type) }
+    let!(:buttons) { 2.times.map { create(:button, inapp: inapp) } }
+    let!(:change) do
+      type.title_margin_top = '42 px'
+      inapp.title = 'new title'
+      buttons&.map { |button| button.content = "new content #{button.id}" }
+    end
+    let(:params) do
+      change
+      button_params = {}
+      buttons.each_with_index { |button, index| button_params[index] = button }
+      {
+        type: type,
+        inapp: inapp,
+        buttons: { button_attrs: button_params }
+      }.to_json
+    end
+
+    it 'returns 200' do
+      expect(response).to have_http_status(200)
+    end
+
+    it 'updates existing inapp_type' do
+      json = JSON.parse(response.body)
+      expect(json['type']['title_margin_top']).to eq('42 px')
+      expect(json['inapp']['title']).to eq('new title')
+      expect(json['buttons'].first['content']).to eq("new content #{buttons.first.id}")
+    end
+  end
+
+  context 'when there is no button' do
+    let!(:type) { create(:type, user: user) }
+    let!(:inapp) { create(:inapp, user: user, type: type) }
+    let!(:change) do
+      type.title_margin_top = '42 px'
+      inapp.title = 'new title'
+    end
+    let(:params) do
+      change
+      button_params = {}
+      {
+        type: type,
+        inapp: inapp,
+        buttons: { button_attrs: button_params }
+      }.to_json
+    end
+
+    it 'returns 200' do
+      expect(response).to have_http_status(200)
+    end
+
+    it 'updates existing inapp_type' do
+      json = JSON.parse(response.body)
+      expect(json['type']['title_margin_top']).to eq('42 px')
+      expect(json['inapp']['title']).to eq('new title')
+    end
   end
 end

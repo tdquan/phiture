@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
+  # Filters
   before_action :authenticate_user!
+
+  # Exception handling
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
 
   def render_resource(resource)
     if resource&.errors&.empty?
@@ -36,5 +40,11 @@ class ApplicationController < ActionController::API
         }
       ]
     }
+  end
+
+  def handle_not_found(exception)
+    render json: error_hash(
+      '404', 'Not Found', exception.message
+    ), status: :not_found
   end
 end

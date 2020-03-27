@@ -11,4 +11,5 @@
 #
 class Button < ApplicationRecord
   belongs_to :inapp
+  delegate :type, to: :inapp
 end

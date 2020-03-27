@@ -36,4 +36,5 @@ class Type < ApplicationRecord
   belongs_to :user
 
   has_one :inapp, foreign_key: :type_id, dependent: :destroy
+  has_many :buttons, through: :inapp
 end
