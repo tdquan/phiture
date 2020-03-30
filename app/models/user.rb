@@ -17,6 +17,8 @@ class User < ApplicationRecord
           :jwt_authenticatable,
           jwt_revocation_strategy: JwtBlacklist
 
+  validates :email, presence: true
+
   has_many :types
   has_many :inapps
 end
