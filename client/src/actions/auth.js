@@ -2,9 +2,50 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
   LOGIN_SUCCESS,
-  LOGIN_FAIL
+  LOGIN_FAIL,
+  LOAD_USER,
+  AUTH_FAIL
 } from './types';
 import { setAlert } from './alert';
+import setAuthHeaders from '../utils/setAuthorization';
+
+export const loadUser = () => async dispatch => {
+  let headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  };
+  if (localStorage.phiture_token) {
+    headers = setAuthHeaders(headers);
+    console.log('Headers is', headers);
+  }
+  const config = {
+    method: 'GET',
+    headers: headers
+  }
+
+  try {
+    const res = await fetch('/auth', config);
+    res.json()
+      .then(data => {
+        if (res.status >= 200 && res.status < 400) {
+          dispatch({
+            type: LOAD_USER,
+            payload: data
+          })
+        } else {
+          const err = new Error(data.statusText);
+          err.code = data.status;
+          throw err;
+        }
+      })
+      .catch(err => {
+        dispatch({ type: AUTH_FAIL });
+      });
+  } catch(e) {
+    dispatch(setAlert('You are not signed-in, please sign-in again', 'danger'));
+    dispatch({ type: AUTH_FAIL });
+  }
+}
 
 export const signUp = ({ email, password }) => async dispatch => {
   const newUser = { user: { email, password } };

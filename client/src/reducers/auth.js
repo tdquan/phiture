@@ -2,7 +2,9 @@ import {
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
   LOGIN_SUCCESS,
-  LOGIN_FAIL
+  LOGIN_FAIL,
+  LOAD_USER,
+  AUTH_FAIL
 } from '../actions/types';
 
 const initialState = {
@@ -25,8 +27,16 @@ export default (state=initialState, action) => {
         isAuthenticated: true,
         loading: false,
       }
+    case LOAD_USER:
+      return {
+        ...state,
+        ...payload,
+        isAuthenticated: true,
+        loading: false,
+      }
     case SIGNUP_FAIL:
     case LOGIN_FAIL:
+    case AUTH_FAIL:
       localStorage.removeItem('phiture_token');
       return {
         ...state,
