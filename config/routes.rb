@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :inapps, only: [:show] do
     resources :buttons, only: [:index, :new, :create]
   end
-
-  get '/auth', to: 'sessions#auth'
+  devise_scope :user do
+    get '/auth', to: 'sessions#auth'
+  end
 end
