@@ -19,6 +19,6 @@ class User < ApplicationRecord
 
   validates :email, presence: true
 
-  has_many :types
+  has_many :types, dependent: :destroy
   has_many :inapps
 end

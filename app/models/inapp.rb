@@ -16,5 +16,5 @@ class Inapp < ApplicationRecord
   belongs_to :user
   belongs_to :type
 
-  has_many :buttons
+  has_many :buttons, dependent: :destroy
 end

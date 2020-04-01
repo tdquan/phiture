@@ -29,6 +29,10 @@ const Inapp = ({ loadInapp, inapp }) => {
 
   const { title, content, buttons, modal, header, bottom, closeCircle, closeCross } = cardData;
 
+  const handleSubmit = async e => {
+    e.preventDefault();
+  }
+
   const handleInappInputChange = e => setInappData({ ...inappData, [e.target.name]: e.target.value });
   const handleTypeInputChange = e => {
     setTypeData({ ...typeData, [e.target.name]: e.target.value });
@@ -44,7 +48,7 @@ const Inapp = ({ loadInapp, inapp }) => {
           <h3 className="text-center mt-4">Inapp Editor</h3>
           <div className="card">
             <div className="card-body">
-              <form action="">
+              <form onSubmit={ e => handleSubmit(e) }>
                 {/*Inapp values*/}
                 <h4 className="text-center">Inapp</h4>
                 <br/>
@@ -94,7 +98,14 @@ const Inapp = ({ loadInapp, inapp }) => {
                 <div className="inapp-card-header">
                   <img src="/header.jpg" alt="header" className="inapp-card-img" style={header} />
                   <button href="#" className="close-btn" style={closeCircle}>
-                    <div className="cross d-flex flex-column justify-content-center align-items-center" style={closeCross}></div>
+                    <div className="cross d-flex flex-column justify-content-center align-items-center">
+                      <style dangerouslySetInnerHTML={{__html: `
+                        .cross:before, .cross:after {
+                          height: ${closeCross.height};
+                          width: ${closeCross.width};
+                        }
+                      `}} />
+                    </div>
                   </button>
                 </div>
 
@@ -110,7 +121,7 @@ const Inapp = ({ loadInapp, inapp }) => {
                   </p>
 
                   {/*<!-- Buttons -->*/}
-                  <div className="buttons" className="d-flex flex-column align-items-center">
+                  <div className="d-flex flex-column align-items-center">
                      <a href="https://www.blender-inapps.com/inapps/603/buttons/new" className="btn btn-outline-primary d-flex justify-content-center align-items-center btn-block btn-lg" style={buttons}>
                       Discover now
                     </a>
