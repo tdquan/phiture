@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom';
 
 import InappCard from '../partials/InappCard';
 import { loadInapps } from '../../actions/inapp';
+import isEmpty from '../../utils/isEmpty';
 
 const Dashboard = ({ loadInapps, inapp }) => {
   useEffect(() => {
-    loadInapps()
+    loadInapps();
   }, []);
 
   const { inapps, loading } = inapp;
@@ -20,7 +21,7 @@ const Dashboard = ({ loadInapps, inapp }) => {
           <p style={{fontSize: "15em"}} className="m-0 h-100">+</p>
         </div>
       </Link>
-      { !loading ?
+      { !loading && !isEmpty(inapps) ?
         inapps.map((inapp, key) => {
           return <InappCard key={key} inapp={inapp.inapp} />
         }) :
@@ -32,7 +33,7 @@ const Dashboard = ({ loadInapps, inapp }) => {
 
 Dashboard.propTypes = {
   inapp: PropTypes.object.isRequired,
-  loadInapp: PropTypes.func.isRequired
+  loadInapps: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

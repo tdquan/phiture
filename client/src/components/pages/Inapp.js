@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { loadInapp, addButton, createInapp, setLoaded } from '../../actions/inapp';
+import { loadInapp, addButton, createInapp } from '../../actions/inapp';
 import { inapp as currentInapp, type, buttons as currentButtons, button as newButton, inappCard } from '../../shared/constants';
 import TextFieldGroup from '../partials/TextFieldGroup';
 import isEmpty from '../../utils/isEmpty';
 import processTypeData from '../../utils/processTypeData';
 
 
-const Inapp = ({ loadInapp, addButton, createInapp, inapp, match: { params } }, setLoaded) => {
+const Inapp = ({ loadInapp, addButton, createInapp, inapp, match: { params } }) => {
   const { loading } = inapp;
 
   const [inappData, setInappData] = useState(currentInapp);
@@ -21,11 +21,8 @@ const Inapp = ({ loadInapp, addButton, createInapp, inapp, match: { params } }, 
   useEffect(() => {
     loadInapp(params.id);
 
-    // if (!isEmpty(inapp.currentInapp) && !isEmpty(inapp.type)) {
-      setLoaded();
-    // }
-
     if (!loading && !isEmpty(inapp.currentInapp) && !isEmpty(inapp.type)) {
+      loadInapp(inapp.currentInapp.id);
       setInappData(inapp.currentInapp);
       setTypeData(inapp.type);
       setButtonsData(inapp.buttons);
@@ -204,7 +201,6 @@ const Inapp = ({ loadInapp, addButton, createInapp, inapp, match: { params } }, 
 
 Inapp.propTypes = {
   inapp: PropTypes.object.isRequired,
-  setLoaded: PropTypes.func.isRequired,
   loadInapp: PropTypes.func.isRequired,
   addButton: PropTypes.func.isRequired,
   createInapp: PropTypes.func.isRequired
@@ -215,4 +211,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 })
 
-export default connect(mapStateToProps, { loadInapp, addButton, createInapp, setLoaded })(Inapp)
+export default connect(mapStateToProps, { loadInapp, addButton, createInapp })(Inapp)

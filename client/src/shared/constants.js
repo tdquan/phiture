@@ -1,9 +1,9 @@
 export const inapp = {
   name: '',
   description: '',
-  title: '',
-  content: '',
-  image: '',
+  title: 'New title',
+  content: 'Some very interesting content',
+  image: '/header.jpg',
   user_id: '',
   type_id: ''
 };
@@ -12,7 +12,7 @@ export const type = {
   title_margin_top: '',
   title_font_family: '',
   title_font_size: '',
-  title_font_color: 'green',
+  title_font_color: '',
   title_line_height: '',
   title_text_align: '',
   content_margin_top: '',

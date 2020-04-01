@@ -1,4 +1,4 @@
-import { LOAD_INAPP, LOAD_INAPPS, ADD_BUTTON, INAPP_CREATED, LOADED } from '../actions/types';
+import { LOAD_INAPP, LOAD_INAPPS, ADD_BUTTON, INAPP_CREATED } from '../actions/types';
 
 const initialState = {
   currentInapp: null,
@@ -16,30 +16,25 @@ export default (state=initialState, action) => {
       return {
         ...state,
         ...payload,
-        loading: true
+        loading: false
       };
     case LOAD_INAPPS:
       return {
         ...state,
         ...payload,
-        loading: true
+        loading: false
       };
     case ADD_BUTTON:
       return {
         ...state,
         buttons:[...state.buttons, payload],
-        loading: true
+        loading: false
       };
     case INAPP_CREATED:
       return {
         ...state,
         loading: false
       }
-    case LOADED:
-      return {
-        ...state,
-        loading: false
-      };
     default:
       return state;
   }
