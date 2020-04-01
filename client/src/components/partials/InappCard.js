@@ -1,12 +1,13 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const InappCard = ({ inapp }) => {
   const { id, name, title, content, image } = inapp;
+  const history = useHistory();
 
   return (
     <Fragment>
-      <Link to={`/inapps/${id}`}>
+      <Link to="#" onClick={() => history.push(`/inapps/${id}`)}>
         <h4 className="text-center">{name}</h4>
         <div className="col p-3 d-flex justify-content-center align-items-center">
           <div className="card h-100 mb-3" style={{width: "320px"}}>
