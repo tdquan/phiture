@@ -65,3 +65,7 @@ export const loadInapps = () => async dispatch => {
     payload: { inapps: inapps }
   })
 }
+
+export const createInapp = () => async dispatch => {
+
+}

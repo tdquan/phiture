@@ -8,3 +8,58 @@ a {
     text-decoration: none;
   }
 }
+
+.inapp-card {
+  width: 320px;
+  height: auto;
+  max-height: 80%;
+  overflow: hidden;
+}
+
+.inapp-card-img {
+  height: 220px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.inapp-card-bottom {
+  padding: 5px 25px 30px;
+}
+
+.inapp-card-buttons {
+  button, a {
+    margin-right: 1em;
+    &:last-child {
+      margin-right: none;
+    }
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  padding: 0;
+  border: none;
+  opacity: 0.8;
+}
+
+.cross {
+  &:before, &:after {
+    position: absolute;
+    content: ' ';
+    height: 15px;
+    width: 3px;
+    background-color: #000000;
+  }
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
+}

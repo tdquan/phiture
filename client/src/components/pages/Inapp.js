@@ -3,67 +3,39 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { loadInapp } from '../../actions/inapp';
+import { inapp as currentInapp, type, inappCard } from '../../shared/constants';
 import TextFieldGroup from '../partials/TextFieldGroup';
 import isEmpty from '../../utils/isEmpty';
+import processTypeData from '../../utils/processTypeData';
 
 
 const Inapp = ({ loadInapp, inapp }) => {
   const { loading } = inapp;
 
-  const currentInapp = {
-    name: '',
-    description: '',
-    title: '',
-    content: '',
-    image: '',
-    user_id: '',
-    type_id: ''
-  };
-
-  const type = {
-    title_margin_top: '',
-    title_font_family: '',
-    title_font_size: '',
-    title_font_color: '',
-    title_line_height: '',
-    title_text_align: '',
-    content_margin_top: '',
-    content_font_family: '',
-    content_font_size: '',
-    content_font_color: '',
-    content_line_height: '',
-    content_text_align: '',
-    content_margin_bottom: '',
-    button_font_family: '',
-    button_font_size: '',
-    button_font_color: '',
-    button_letter_spacing: '',
-    modal_radius: '',
-    header_height: '',
-    bottom_padding_top: '',
-    bottom_padding_right: '',
-    bottom_padding_bottom: '',
-    bottom_padding_left: '',
-    bottom_background_color: '',
-    close_circle_width: '',
-    close_cross_width: '',
-    close_cross_thickness: ''
-  };
-
-  const [inappData, setInappData] = useState({...currentInapp});
-  const [typeData, setTypeData] = useState({...type});
+  const [inappData, setInappData] = useState(currentInapp);
+  const [typeData, setTypeData] = useState(type);
+  const [cardData, setCardData] = useState(inappCard);
 
   useEffect(() => {
     loadInapp();
 
     if (!loading && !isEmpty(inapp.currentInapp) && !isEmpty(inapp.type)) {
-      setInappData({ ...inapp.currentInapp })
-      setTypeData({ ...inapp.type })
+      setInappData(inapp.currentInapp);
+      setTypeData(inapp.type);
+      setCardData(processTypeData(inapp.type));
     }
   }, [loading]);
 
+
+  const { title, content, buttons, modal, header, bottom, closeCircle, closeCross } = cardData;
+
   const handleInappInputChange = e => setInappData({ ...inappData, [e.target.name]: e.target.value });
-  const handleTypeInputChange = e => setTypeData({ ...typeData, [e.target.name]: e.target.value });
+  const handleTypeInputChange = e => {
+    setTypeData({ ...typeData, [e.target.name]: e.target.value });
+    const newTypeData = { ...typeData };
+    newTypeData[e.target.name] = e.target.value
+    setCardData(processTypeData(newTypeData));
+  }
 
   return loading || isEmpty(inapp.currentInapp) || isEmpty(inapp.type) ? null : (
     <Fragment>
@@ -117,20 +89,35 @@ const Inapp = ({ loadInapp, inapp }) => {
         </div>
         <div className="col h-100 p-3" id="modal">
           <div className="modal d-flex align-items-center position-relative" tabIndex="-1" role="dialog">
-            <div className="modal-dialog shadow" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Modal title</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+            <div className="modal-dialog shadow" style={modal} role="document">
+              <div className="modal-content d-flex flex-column justify-content-between align-items-stretch inapp-card" style={modal}>
+                <div className="inapp-card-header">
+                  <img src="/header.jpg" alt="header" className="inapp-card-img" style={header} />
+                  <button href="#" className="close-btn" style={closeCircle}>
+                    <div className="cross d-flex flex-column justify-content-center align-items-center" style={closeCross}></div>
                   </button>
                 </div>
-                <div className="modal-body">
-                  <p>Modal body text goes here.</p>
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-primary">Save changes</button>
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                {/*<!-- First screen start -->*/}
+                <div className="inapp-card-bottom" style={bottom}>
+
+                  {/*<!-- Title -->*/}
+                  <h2 className="inapp-card-title" style={title}>Hidden gems ; )</h2>
+
+                  {/*<!-- Content -->*/}
+                  <p className="inapp-card-content" style={content}>For that once-in-a-lifetime trip.
+                  To add a destination to your wishlist simply look for a location and tap on the + button.
+                  </p>
+
+                  {/*<!-- Buttons -->*/}
+                  <div className="buttons" className="d-flex flex-column align-items-center">
+                     <a href="https://www.blender-inapps.com/inapps/603/buttons/new" className="btn btn-outline-primary d-flex justify-content-center align-items-center btn-block btn-lg" style={buttons}>
+                      Discover now
+                    </a>
+                     <a href="https://www.blender-inapps.com/inapps/603/buttons/new" className="btn btn-outline-danger d-flex justify-content-center align-items-center btn-block btn-lg" style={buttons}>
+                      Close
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -151,7 +138,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 })
 
-export default connect(
-  mapStateToProps, { loadInapp }
-// Implement map dispatch to props
-)(Inapp)
+export default connect(mapStateToProps, { loadInapp })(Inapp)
