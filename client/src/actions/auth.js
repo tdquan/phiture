@@ -16,7 +16,6 @@ export const loadUser = () => async dispatch => {
   };
   if (localStorage.phiture_token) {
     headers = setAuthHeaders(headers);
-    console.log('Headers is', headers);
   }
   const config = {
     method: 'GET',

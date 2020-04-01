@@ -83,3 +83,19 @@ export const inappCard = {
     width: '' // Correspond to close_cross_thickness
   }
 }
+
+export const buttons = [
+  {
+    content: 'OK',
+    link: '#',
+    fill_color: 'transparent',
+    border_color: '#000'
+  }
+]
+
+export const button = {
+  content: 'New Button',
+  link: '#',
+  fill_color: 'transparent',
+  border_color: '#000'
+}

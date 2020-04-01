@@ -12,7 +12,8 @@ const TextFieldGroup = ({
   type,
   className,
   onChange,
-  disabled
+  disabled,
+  dataIndex
 }) => {
   return (
     <div className="form-group row">
@@ -33,6 +34,7 @@ const TextFieldGroup = ({
           onChange={onChange}
           disabled={disabled}
           label={label}
+          data-index={dataIndex}
         />
         {info && <small className="form-text text-muted">{info}</small>}
         {error && <div className="invalid-feedback">{error}</div>}

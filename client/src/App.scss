@@ -63,3 +63,10 @@ a {
     transform: rotate(-45deg);
   }
 }
+
+button, a.btn {
+  &:hover {
+    background: inherit;
+    color: inherit;
+  }
+}

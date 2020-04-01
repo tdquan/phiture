@@ -31,6 +31,7 @@ function App() {
               <Route exact path='/signup' component={ Signup } />
               <PrivateRoute exact path='/dashboard' component={ Dashboard } />
               <PrivateRoute exact path='/new-inapp' component={ Inapp } />
+              <PrivateRoute exact path='/inapps/:id' component={ Inapp } />
             </Switch>
           </div>
         </Fragment>

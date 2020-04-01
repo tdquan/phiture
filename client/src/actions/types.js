@@ -8,3 +8,6 @@ export const LOAD_USER = 'LOAD_USER';
 export const AUTH_FAIL = 'AUTH_FAIL';
 export const LOAD_INAPP = 'LOAD_INAPP';
 export const LOAD_INAPPS = 'LOAD_INAPPS';
+export const ADD_BUTTON = 'ADD_BUTTON';
+export const INAPP_CREATED = 'INAPP_CREATED';
+export const LOADED = 'LOADED';

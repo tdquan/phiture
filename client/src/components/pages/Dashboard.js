@@ -21,8 +21,8 @@ const Dashboard = ({ loadInapps, inapp }) => {
         </div>
       </Link>
       { !loading ?
-        Array(10).fill().map((_, key) => {
-          return <InappCard key={key} inapp={inapps[0]} />
+        inapps.map((inapp, key) => {
+          return <InappCard key={key} inapp={inapp.inapp} />
         }) :
         null
       }

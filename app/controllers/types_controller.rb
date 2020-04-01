@@ -3,8 +3,9 @@
 # Controller methods for crud operations on the types for inapps
 class TypesController < ApplicationController
   def index
-    types = user_signed_in? ? current_user.types : Type.all
-    render json: types
+    inapps = user_signed_in? ? current_user.inapps.includes(:type) : Inapp.all
+    response = inapps.map { |inapp| { inapp: inapp, type: inapp.type, buttons: inapp.buttons } }
+    render json: response
   end
 
   def new
@@ -15,6 +16,8 @@ class TypesController < ApplicationController
   end
 
   def create
+    return update if params[:inapp][:id]
+
     type = current_user.types.new(type_params)
     inapp = current_user.inapps.new(inapp_params)
     ActiveRecord::Base.transaction do
@@ -44,7 +47,7 @@ class TypesController < ApplicationController
   end
 
   def update
-    type = current_user.types.find(params[:id])
+    type = current_user.types.find(params[:type][:id])
     inapp = type&.inapp
     buttons = inapp&.buttons
 
